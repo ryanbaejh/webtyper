@@ -23,6 +23,11 @@
   opacity: 1;
 }
 
+/* Skipped: auto-advanced, always visible */
+.typeover-skipped {
+  opacity: 1;
+}
+
 /* Incorrect: red underline */
 .typeover-incorrect {
   opacity: 1;

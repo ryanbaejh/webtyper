@@ -103,6 +103,10 @@ document.getElementById('btn-new').addEventListener('click', async () => {
   show('view-idle');
 });
 
+document.getElementById('btn-settings').addEventListener('click', () => {
+  chrome.tabs.create({ url: chrome.runtime.getURL('settings.html') });
+});
+
 // ── Init ──────────────────────────────────────────────────────────────────────
 
 (async () => {

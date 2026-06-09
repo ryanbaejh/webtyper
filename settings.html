@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TypeOver — Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="page">
+
+    <header>
+      <span class="logo">T</span>
+      <h1>TypeOver Settings</h1>
+    </header>
+
+    <section class="card">
+      <h2>Special Characters</h2>
+      <p class="desc">Control how TypeOver handles characters that aren't easily typed on a standard keyboard.</p>
+
+      <div class="mode-list">
+        <label class="mode-opt">
+          <input type="radio" name="mode" value="keep">
+          <span class="mode-body">
+            <span class="mode-title">Keep everything</span>
+            <span class="mode-hint">Type all characters exactly as they appear on the page</span>
+          </span>
+        </label>
+        <label class="mode-opt">
+          <input type="radio" name="mode" value="skip-all">
+          <span class="mode-body">
+            <span class="mode-title">Skip non-keyboard characters</span>
+            <span class="mode-hint">Cursor automatically advances past any character not on a standard keyboard</span>
+          </span>
+        </label>
+        <label class="mode-opt">
+          <input type="radio" name="mode" value="advanced">
+          <span class="mode-body">
+            <span class="mode-title">Advanced</span>
+            <span class="mode-hint">Configure each character category individually</span>
+          </span>
+        </label>
+      </div>
+    </section>
+
+    <section id="advanced-panel" class="card hidden">
+      <h2>Advanced Settings</h2>
+      <p class="desc">
+        <strong>Skip</strong> — cursor passes automatically, no key needed.
+        <strong>Replace</strong> — type a simpler equivalent (shown after →).
+        <strong>Keep</strong> — type the exact character.
+      </p>
+
+      <div class="char-rows">
+
+        <div class="char-row">
+          <div class="char-info">
+            <span class="char-name">Em dash</span>
+            <span class="char-example">— → -</span>
+          </div>
+          <div class="action-group">
+            <label><input type="radio" name="emDash" value="skip"><span>Skip</span></label>
+            <label><input type="radio" name="emDash" value="replace"><span>Replace with -</span></label>
+            <label><input type="radio" name="emDash" value="keep"><span>Keep</span></label>
+          </div>
+        </div>
+
+        <div class="char-row">
+          <div class="char-info">
+            <span class="char-name">En dash</span>
+            <span class="char-example">– → -</span>
+          </div>
+          <div class="action-group">
+            <label><input type="radio" name="enDash" value="skip"><span>Skip</span></label>
+            <label><input type="radio" name="enDash" value="replace"><span>Replace with -</span></label>
+            <label><input type="radio" name="enDash" value="keep"><span>Keep</span></label>
+          </div>
+        </div>
+
+        <div class="char-row">
+          <div class="char-info">
+            <span class="char-name">Smart quotes</span>
+            <span class="char-example">" " → "  and  ' ' → '</span>
+          </div>
+          <div class="action-group">
+            <label><input type="radio" name="smartQuotes" value="skip"><span>Skip</span></label>
+            <label><input type="radio" name="smartQuotes" value="replace"><span>Replace with " '</span></label>
+            <label><input type="radio" name="smartQuotes" value="keep"><span>Keep</span></label>
+          </div>
+        </div>
+
+        <div class="char-row">
+          <div class="char-info">
+            <span class="char-name">Ellipsis</span>
+            <span class="char-example">… (no keyboard equivalent)</span>
+          </div>
+          <div class="action-group">
+            <label><input type="radio" name="ellipsis" value="skip"><span>Skip</span></label>
+            <label><input type="radio" name="ellipsis" value="keep"><span>Keep</span></label>
+          </div>
+        </div>
+
+        <div class="char-row">
+          <div class="char-info">
+            <span class="char-name">Non-breaking space</span>
+            <span class="char-example">&amp;nbsp; → regular space</span>
+          </div>
+          <div class="action-group">
+            <label><input type="radio" name="nbSpace" value="skip"><span>Skip</span></label>
+            <label><input type="radio" name="nbSpace" value="replace"><span>Replace with space</span></label>
+            <label><input type="radio" name="nbSpace" value="keep"><span>Keep</span></label>
+          </div>
+        </div>
+
+        <div class="char-row">
+          <div class="char-info">
+            <span class="char-name">Footnotes &amp; superscripts</span>
+            <span class="char-example">Text inside &lt;sup&gt; and &lt;sub&gt; tags</span>
+          </div>
+          <div class="action-group">
+            <label><input type="radio" name="footnotes" value="skip"><span>Skip</span></label>
+            <label><input type="radio" name="footnotes" value="keep"><span>Keep</span></label>
+          </div>
+        </div>
+
+        <div class="char-row">
+          <div class="char-info">
+            <span class="char-name">Accented letters</span>
+            <span class="char-example">é ñ ü à → base letter</span>
+          </div>
+          <div class="action-group">
+            <label><input type="radio" name="accented" value="skip"><span>Skip</span></label>
+            <label><input type="radio" name="accented" value="replace"><span>Replace with base</span></label>
+            <label><input type="radio" name="accented" value="keep"><span>Keep</span></label>
+          </div>
+        </div>
+
+        <div class="char-row">
+          <div class="char-info">
+            <span class="char-name">IPA / phonetic symbols</span>
+            <span class="char-example">ə æ ɪ ʊ ʃ ð</span>
+          </div>
+          <div class="action-group">
+            <label><input type="radio" name="ipa" value="skip"><span>Skip</span></label>
+            <label><input type="radio" name="ipa" value="keep"><span>Keep</span></label>
+          </div>
+        </div>
+
+        <div class="char-row">
+          <div class="char-info">
+            <span class="char-name">Other symbols</span>
+            <span class="char-example">© ™ → × ± ° §</span>
+          </div>
+          <div class="action-group">
+            <label><input type="radio" name="other" value="skip"><span>Skip</span></label>
+            <label><input type="radio" name="other" value="keep"><span>Keep</span></label>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="footer">
+      <button id="btn-save" class="btn-save">Save Settings</button>
+      <span id="save-status" class="save-status"></span>
+    </div>
+
+  </div>
+  <script src="settings.js"></script>
+</body>
+</html>

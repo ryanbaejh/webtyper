@@ -1,0 +1,258 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #0e0e1a;
+  color: #e2e2f0;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 32px 24px 56px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: #6e76ff;
+  border-radius: 8px;
+  font-size: 17px;
+  font-weight: 800;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+h1 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #e2e2f0;
+}
+
+.card {
+  background: #12121f;
+  border: 1px solid #1e1e35;
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 14px;
+}
+
+.card.hidden {
+  display: none;
+}
+
+h2 {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.9px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.desc {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 18px;
+  line-height: 1.55;
+}
+
+.desc strong {
+  color: #888;
+}
+
+/* ── Mode selector ──────────────────────────────────────────────────── */
+
+.mode-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.mode-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  border: 1px solid #1e1e35;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.mode-opt:hover {
+  border-color: #3a3a55;
+  background: #161628;
+}
+
+.mode-opt:has(input:checked) {
+  border-color: #6e76ff;
+  background: rgba(110, 118, 255, 0.07);
+}
+
+.mode-opt input[type="radio"] {
+  margin-top: 2px;
+  accent-color: #6e76ff;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.mode-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.mode-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #d0d0e8;
+}
+
+.mode-hint {
+  font-size: 12px;
+  color: #4a4a6a;
+  line-height: 1.4;
+}
+
+/* ── Advanced character rows ────────────────────────────────────────── */
+
+.char-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.char-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid #181828;
+}
+
+.char-row:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.char-row:first-child {
+  padding-top: 0;
+}
+
+.char-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.char-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: #c0c0d8;
+}
+
+.char-example {
+  font-size: 11px;
+  color: #4a4a6a;
+  font-family: 'Menlo', 'Consolas', monospace;
+}
+
+/* ── Action chips ───────────────────────────────────────────────────── */
+
+.action-group {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.action-group label {
+  position: relative;
+  cursor: pointer;
+}
+
+.action-group input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.action-group label span {
+  display: block;
+  padding: 4px 9px;
+  border-radius: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid #222238;
+  color: #4a4a6a;
+  transition: border-color 0.12s, color 0.12s, background 0.12s;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.action-group label:hover span {
+  border-color: #44445a;
+  color: #888;
+}
+
+.action-group input:checked + span {
+  background: #6e76ff;
+  color: #fff;
+  border-color: #6e76ff;
+}
+
+/* ── Footer ─────────────────────────────────────────────────────────── */
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 8px;
+}
+
+.btn-save {
+  padding: 10px 26px;
+  background: #6e76ff;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.1s;
+  font-family: inherit;
+}
+
+.btn-save:hover  { filter: brightness(1.12); }
+.btn-save:active { transform: scale(0.97); }
+
+.save-status {
+  font-size: 13px;
+  color: #5db87a;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.save-status.visible {
+  opacity: 1;
+}

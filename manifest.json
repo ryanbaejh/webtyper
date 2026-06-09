@@ -15,5 +15,6 @@
       "run_at": "document_idle"
     }
   ],
-  "permissions": ["activeTab"]
+  "permissions": ["activeTab", "storage"],
+  "options_page": "settings.html"
 }

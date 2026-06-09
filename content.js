@@ -20,6 +20,92 @@
   let hoverTarget = null;
   let overlayEl = null;
 
+  // ── Settings ───────────────────────────────────────────────────────────────
+
+  const DEFAULT_SETTINGS = {
+    mode: 'advanced',
+    advanced: {
+      emDash:      'replace',
+      enDash:      'replace',
+      smartQuotes: 'replace',
+      ellipsis:    'skip',
+      nbSpace:     'replace',
+      footnotes:   'skip',
+      accented:    'keep',
+      ipa:         'skip',
+      other:       'skip',
+    }
+  };
+
+  let cachedSettings = DEFAULT_SETTINGS;
+
+  chrome.storage.sync.get('settings').then(r => {
+    if (r.settings) cachedSettings = r.settings;
+  }).catch(() => {});
+
+  chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'sync' && changes.settings) {
+      cachedSettings = changes.settings.newValue ?? DEFAULT_SETTINGS;
+    }
+  });
+
+  // Character → keyboard-friendly replacement (1-to-1 only)
+  const REPLACEMENTS = {
+    '—': '-',   // em dash
+    '―': '-',   // horizontal bar
+    '–': '-',   // en dash
+    '“': '"',   // left double quote
+    '”': '"',   // right double quote
+    '‘': "'",   // left single quote
+    '’': "'",   // right single quote
+    ' ': ' ',   // non-breaking space
+  };
+
+  function isKeyboardChar(ch) {
+    return /^[\x20-\x7E]$/.test(ch);
+  }
+
+  function getCharCategory(ch) {
+    if ('—―'.includes(ch)) return 'emDash';
+    if (ch === '–') return 'enDash';
+    if ('“”‘’'.includes(ch)) return 'smartQuotes';
+    if (ch === '…') return 'ellipsis';
+    if (ch === ' ') return 'nbSpace';
+    const code = ch.codePointAt(0);
+    if (code >= 0x00C0 && code <= 0x024F) return 'accented';
+    if ((code >= 0x0250 && code <= 0x02AF) || (code >= 0x1D00 && code <= 0x1DBF)) return 'ipa';
+    if (code > 127) return 'other';
+    return null;
+  }
+
+  // Returns { skip: bool, expected: string }
+  function processChar(ch, settings) {
+    if (isKeyboardChar(ch)) return { skip: false, expected: ch };
+    if (settings.mode === 'keep') return { skip: false, expected: ch };
+    if (settings.mode === 'skip-all') return { skip: true };
+
+    const cat = getCharCategory(ch);
+    if (!cat) return { skip: false, expected: ch };
+
+    const action = settings.advanced[cat] ?? 'skip';
+    if (action === 'skip') return { skip: true };
+    if (action === 'replace') {
+      let rep = REPLACEMENTS[ch];
+      if (!rep) rep = ch.normalize('NFD').replace(/[̀-ͯ]/g, '') || ch;
+      return { skip: false, expected: rep };
+    }
+    return { skip: false, expected: ch }; // keep
+  }
+
+  function isInsideSupSub(node) {
+    let el = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
+    while (el) {
+      if (el.tagName === 'SUP' || el.tagName === 'SUB') return true;
+      el = el.parentElement;
+    }
+    return false;
+  }
+
   // ── Selection Mode ─────────────────────────────────────────────────────────
 
   function enterSelectionMode() {
@@ -94,7 +180,7 @@
     state.container = container;
     state.savedHTML = container.innerHTML;
 
-    const chars = wrapChars(container);
+    const chars = wrapChars(container, cachedSettings);
     if (chars.length === 0) {
       restore();
       state.mode = 'idle';
@@ -166,9 +252,12 @@
     return s.replace(/\s+/g, ' ');
   }
 
-  function wrapChars(element) {
+  function wrapChars(element, settings) {
     const chars = [];
     const SKIP = new Set(['SCRIPT','STYLE','NOSCRIPT','IFRAME','INPUT','TEXTAREA','SELECT','BUTTON']);
+    const skipFootnotes = settings.mode === 'skip-all' ||
+      (settings.mode === 'advanced' && settings.advanced.footnotes === 'skip');
+    if (skipFootnotes) { SKIP.add('SUP'); SKIP.add('SUB'); }
 
     function walk(node) {
       if (node.nodeType === Node.TEXT_NODE) {
@@ -178,10 +267,15 @@
         const frag = document.createDocumentFragment();
         for (const ch of text) {
           const span = document.createElement('span');
-          span.className = 'typeover-char typeover-pending';
           span.textContent = ch;
+          const { skip, expected } = processChar(ch, settings);
+          if (skip) {
+            span.className = 'typeover-char typeover-skipped';
+          } else {
+            span.className = 'typeover-char typeover-pending';
+            chars.push({ expected, state: 'pending', span });
+          }
           frag.appendChild(span);
-          chars.push({ expected: ch, state: 'pending', span });
         }
         node.parentNode.replaceChild(frag, node);
 
@@ -198,9 +292,11 @@
 
   // Wraps only the characters covered by a Range, leaving surrounding text intact.
   // Returns the chars array for the selected text only.
-  function wrapRangeChars(range) {
+  function wrapRangeChars(range, settings) {
     const chars = [];
     const SKIP = new Set(['SCRIPT','STYLE','NOSCRIPT','IFRAME','INPUT','TEXTAREA','SELECT','BUTTON']);
+    const skipFootnotes = settings.mode === 'skip-all' ||
+      (settings.mode === 'advanced' && settings.advanced.footnotes === 'skip');
 
     const root = range.commonAncestorContainer;
     const walkRoot = root.nodeType === Node.TEXT_NODE ? root.parentNode : root;
@@ -210,6 +306,7 @@
         const p = node.parentElement;
         if (p && SKIP.has(p.tagName)) return NodeFilter.FILTER_REJECT;
         if (p?.isContentEditable) return NodeFilter.FILTER_REJECT;
+        if (skipFootnotes && isInsideSupSub(node)) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
     });
@@ -236,10 +333,15 @@
 
       for (const ch of normalizeText(text.slice(start, end))) {
         const span = document.createElement('span');
-        span.className = 'typeover-char typeover-pending';
         span.textContent = ch;
+        const { skip, expected } = processChar(ch, settings);
+        if (skip) {
+          span.className = 'typeover-char typeover-skipped';
+        } else {
+          span.className = 'typeover-char typeover-pending';
+          chars.push({ expected, state: 'pending', span });
+        }
         frag.appendChild(span);
-        chars.push({ expected: ch, state: 'pending', span });
       }
 
       if (end < text.length) {
@@ -268,7 +370,7 @@
     state.container = saveEl;
     state.savedHTML = saveEl.innerHTML;
 
-    const chars = wrapRangeChars(range);
+    const chars = wrapRangeChars(range, cachedSettings);
 
     if (chars.length === 0) {
       restore();
