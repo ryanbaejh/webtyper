@@ -1,0 +1,131 @@
+/* Selection mode */
+.typeover-highlight {
+  outline: 2px solid rgba(110, 118, 255, 0.7) !important;
+  outline-offset: 3px !important;
+  background-color: rgba(110, 118, 255, 0.07) !important;
+  cursor: crosshair !important;
+}
+
+/* Characters — base */
+.typeover-char {
+  font: inherit;
+  letter-spacing: inherit;
+  word-spacing: inherit;
+}
+
+/* Pending: greyed out */
+.typeover-pending {
+  opacity: 0.3;
+}
+
+/* Correct: full original style restored */
+.typeover-correct {
+  opacity: 1;
+}
+
+/* Incorrect: red underline */
+.typeover-incorrect {
+  opacity: 1;
+  color: #e05555 !important;
+  text-decoration: underline wavy #e05555;
+}
+
+/* Blinking cursor bar inserted before current character */
+.typeover-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.05em;
+  background: #6e76ff;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+  animation: typeover-blink 1s step-end infinite;
+}
+
+@keyframes typeover-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* Completion overlay */
+.typeover-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0, 0, 0, 0.6) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  z-index: 2147483647 !important;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.typeover-overlay-box {
+  background: #1a1a30 !important;
+  border: 1px solid #2a2a45 !important;
+  border-radius: 14px !important;
+  padding: 28px 32px !important;
+  min-width: 270px !important;
+  text-align: center !important;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.55) !important;
+  animation: typeover-fadein 0.2s ease !important;
+}
+
+.typeover-overlay-title {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #5db87a !important;
+  margin: 0 0 18px 0 !important;
+  letter-spacing: 0.3px !important;
+}
+
+.typeover-overlay-grid {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+  margin-bottom: 18px !important;
+}
+
+.typeover-overlay-stat {
+  background: #12121f !important;
+  border-radius: 8px !important;
+  padding: 12px 8px !important;
+}
+
+.typeover-overlay-val {
+  display: block !important;
+  font-size: 24px !important;
+  font-weight: 800 !important;
+  color: #6e76ff !important;
+  line-height: 1 !important;
+}
+
+.typeover-overlay-lbl {
+  display: block !important;
+  font-size: 10px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.8px !important;
+  color: #555 !important;
+  margin-top: 5px !important;
+}
+
+.typeover-overlay-btn {
+  display: inline-block !important;
+  padding: 9px 28px !important;
+  background: #6e76ff !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 7px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  font-family: inherit !important;
+  letter-spacing: 0.2px !important;
+}
+
+.typeover-overlay-btn:hover {
+  filter: brightness(1.12) !important;
+}
+
+@keyframes typeover-fadein {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}

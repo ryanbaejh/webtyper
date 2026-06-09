@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "TypeOver",
+  "version": "1.0.0",
+  "description": "Practice typing on any webpage",
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": "icons/icon.svg"
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "permissions": ["activeTab"]
+}

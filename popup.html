@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TypeOver</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="logo">T</span>
+      <h1>TypeOver</h1>
+    </header>
+
+    <!-- Idle -->
+    <div id="view-idle" class="view">
+      <p class="hint">No active session</p>
+      <button id="btn-quick-start" class="btn btn-primary">Quick Start</button>
+      <button id="btn-highlight" class="btn btn-secondary">Start Highlighted Text</button>
+    </div>
+
+    <!-- Selecting -->
+    <div id="view-selecting" class="view hidden">
+      <p class="hint selecting-hint">Click any text on the page</p>
+      <div class="pulse-ring"></div>
+      <button id="btn-cancel" class="btn btn-ghost">Cancel</button>
+    </div>
+
+    <!-- Active -->
+    <div id="view-active" class="view hidden">
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="stat-val" id="s-wpm">0</span>
+          <span class="stat-lbl">WPM</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val" id="s-acc">100%</span>
+          <span class="stat-lbl">Accuracy</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val" id="s-err">0</span>
+          <span class="stat-lbl">Mistakes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val" id="s-time">0s</span>
+          <span class="stat-lbl">Time</span>
+        </div>
+      </div>
+      <div class="row">
+        <button id="btn-end" class="btn btn-danger">End</button>
+        <button id="btn-reset" class="btn btn-ghost">Reset</button>
+      </div>
+    </div>
+
+    <!-- Complete -->
+    <div id="view-complete" class="view hidden">
+      <p class="complete-label">Session Complete</p>
+      <div class="stats-grid">
+        <div class="stat">
+          <span class="stat-val accent" id="c-wpm">0</span>
+          <span class="stat-lbl">WPM</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val" id="c-acc">100%</span>
+          <span class="stat-lbl">Accuracy</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val" id="c-err">0</span>
+          <span class="stat-lbl">Mistakes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-val" id="c-chars">0</span>
+          <span class="stat-lbl">Characters</span>
+        </div>
+      </div>
+      <button id="btn-new" class="btn btn-primary">New Session</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
