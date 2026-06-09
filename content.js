@@ -153,25 +153,35 @@
 
   // ── Text Wrapping ──────────────────────────────────────────────────────────
 
+  // Strips HTML-indentation artifacts from a text node's content.
+  // Leading whitespace that starts with \n (e.g. "\n      TGM4") and trailing
+  // whitespace that ends with \n are indentation, not meaningful content.
+  // Internal whitespace runs are collapsed to a single space.
+  // Meaningful trailing spaces on inline text ("Hello ") are preserved because
+  // they don't start with \n.
+  function normalizeText(text) {
+    let s = text;
+    if (/^\s*\n/.test(s)) s = s.replace(/^\s+/, '');
+    if (/\n\s*$/.test(s)) s = s.replace(/\s+$/, '');
+    return s.replace(/\s+/g, ' ');
+  }
+
   function wrapChars(element) {
     const chars = [];
     const SKIP = new Set(['SCRIPT','STYLE','NOSCRIPT','IFRAME','INPUT','TEXTAREA','SELECT','BUTTON']);
 
     function walk(node) {
       if (node.nodeType === Node.TEXT_NODE) {
-        const text = node.textContent;
-        if (!text.trim()) return;
+        const text = normalizeText(node.textContent);
+        if (!text) return;
 
         const frag = document.createDocumentFragment();
         for (const ch of text) {
-          // Normalize newlines/tabs to space — browsers collapse them visually
-          // but e.key never equals '\n' or '\t', which would strand the cursor
-          const expected = /[\n\r\t]/.test(ch) ? ' ' : ch;
           const span = document.createElement('span');
           span.className = 'typeover-char typeover-pending';
           span.textContent = ch;
           frag.appendChild(span);
-          chars.push({ expected, state: 'pending', span });
+          chars.push({ expected: ch, state: 'pending', span });
         }
         node.parentNode.replaceChild(frag, node);
 
@@ -224,13 +234,12 @@
         frag.appendChild(document.createTextNode(text.slice(0, start)));
       }
 
-      for (const ch of text.slice(start, end)) {
-        const expected = /[\n\r\t]/.test(ch) ? ' ' : ch;
+      for (const ch of normalizeText(text.slice(start, end))) {
         const span = document.createElement('span');
         span.className = 'typeover-char typeover-pending';
         span.textContent = ch;
         frag.appendChild(span);
-        chars.push({ expected, state: 'pending', span });
+        chars.push({ expected: ch, state: 'pending', span });
       }
 
       if (end < text.length) {
