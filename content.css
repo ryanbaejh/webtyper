@@ -1,8 +1,8 @@
 /* Selection mode */
 .typeover-highlight {
-  outline: 2px solid rgba(110, 118, 255, 0.7) !important;
+  outline: 2px solid rgba(61, 132, 209, 0.7) !important;
   outline-offset: 3px !important;
-  background-color: rgba(110, 118, 255, 0.07) !important;
+  background-color: rgba(61, 132, 209, 0.07) !important;
   cursor: crosshair !important;
 }
 
@@ -40,7 +40,7 @@
   display: inline-block;
   width: 2px;
   height: 1.05em;
-  background: #6e76ff;
+  background: #3d84d1;
   vertical-align: text-bottom;
   border-radius: 1px;
   animation: typeover-blink 1s step-end infinite;
@@ -99,7 +99,7 @@
   display: block !important;
   font-size: 24px !important;
   font-weight: 800 !important;
-  color: #6e76ff !important;
+  color: #3d84d1 !important;
   line-height: 1 !important;
 }
 
@@ -115,7 +115,7 @@
 .typeover-overlay-btn {
   display: inline-block !important;
   padding: 9px 28px !important;
-  background: #6e76ff !important;
+  background: #3d84d1 !important;
   color: #fff !important;
   border: none !important;
   border-radius: 7px !important;

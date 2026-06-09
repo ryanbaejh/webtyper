@@ -7,20 +7,20 @@
 /* ── Theme tokens ─────────────────────────────────────────────────────── */
 
 :root {
-  --bg:               #f0ebe0;
-  --surface:          #fdfaf5;
-  --surface-hover:    #ede8de;
-  --border:           #e8ddd0;
-  --border-strong:    #d5cab5;
-  --text:             #2a2318;
-  --text-muted:       #6e6258;
-  --text-faint:       #9e9080;
-  --accent:           #6e76ff;
-  --accent-soft:      rgba(110,118,255,0.09);
-  --chip-border:      #ddd5c2;
+  --bg:               #f3efe8;
+  --surface:          #fffefb;
+  --surface-hover:    #f0ebe2;
+  --border:           #e8e0d4;
+  --border-strong:    #d4c8b8;
+  --text:             #1e1c1a;
+  --text-muted:       #6a6058;
+  --text-faint:       #a09488;
+  --accent:           #3d84d1;
+  --accent-soft:      rgba(61,132,209,0.10);
+  --chip-border:      #dbd4c8;
   --chip-text:        #7a7060;
-  --chip-hover-border: #c5baa8;
-  --chip-hover-text:  #4a4030;
+  --chip-hover-border: #bdb2a4;
+  --chip-hover-text:  #3a3428;
 }
 
 [data-theme="dark"] {
@@ -32,8 +32,8 @@
   --text:             #e2e2f0;
   --text-muted:       #666;
   --text-faint:       #444;
-  --accent:           #6e76ff;
-  --accent-soft:      rgba(110,118,255,0.07);
+  --accent:           #4a90d9;
+  --accent-soft:      rgba(74,144,217,0.08);
   --chip-border:      #222238;
   --chip-text:        #4a4a6a;
   --chip-hover-border: #44445a;

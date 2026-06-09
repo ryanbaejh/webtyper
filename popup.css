@@ -7,25 +7,25 @@
 /* ── Theme tokens ─────────────────────────────────────────────────────── */
 
 :root {
-  --bg:               #f5f0e8;
-  --surface:          #fdfaf5;
-  --surface-hover:    #ede8de;
-  --border:           #e8ddd0;
-  --border-strong:    #d5cab5;
-  --text:             #2a2318;
-  --text-muted:       #6e6258;
-  --text-faint:       #9e9080;
-  --accent:           #6e76ff;
-  --accent-soft:      rgba(110,118,255,0.09);
+  --bg:               #f9f5f0;
+  --surface:          #fffefb;
+  --surface-hover:    #f0ebe2;
+  --border:           #e8e0d4;
+  --border-strong:    #d4c8b8;
+  --text:             #1e1c1a;
+  --text-muted:       #6a6058;
+  --text-faint:       #a09488;
+  --accent:           #3d84d1;
+  --accent-soft:      rgba(61,132,209,0.10);
   --success:          #2d8a50;
   --danger:           #c94040;
-  --stat-bg:          #ede8de;
-  --stat-border:      #e0d5c2;
-  --btn-2-bg:         #ede8de;
-  --btn-2-text:       #4a4030;
-  --btn-2-border:     #ddd5c2;
-  --btn-ghost-border: #d5cab5;
-  --btn-ghost-text:   #6e6258;
+  --stat-bg:          #f0ebe2;
+  --stat-border:      #e0d8cc;
+  --btn-2-bg:         #ede8e0;
+  --btn-2-text:       #3a3428;
+  --btn-2-border:     #d8d0c4;
+  --btn-ghost-border: #d4c8b8;
+  --btn-ghost-text:   #6a6058;
 }
 
 [data-theme="dark"] {
@@ -37,8 +37,8 @@
   --text:             #e2e2f0;
   --text-muted:       #888;
   --text-faint:       #555;
-  --accent:           #6e76ff;
-  --accent-soft:      rgba(110,118,255,0.07);
+  --accent:           #4a90d9;
+  --accent-soft:      rgba(74,144,217,0.08);
   --success:          #5db87a;
   --danger:           #c94040;
   --stat-bg:          #12121f;
