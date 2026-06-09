@@ -15,8 +15,9 @@
   --text:             #1e1c1a;
   --text-muted:       #6a6058;
   --text-faint:       #a09488;
-  --accent:           #7a5c40;
-  --accent-soft:      rgba(122,92,64,0.09);
+  --accent:           #c4a040;
+  --accent-fg:        #2a1800;
+  --accent-soft:      rgba(196,160,64,0.10);
   --chip-border:      #dbd4c8;
   --chip-text:        #7a7060;
   --chip-hover-border: #bdb2a4;
@@ -33,6 +34,7 @@
   --text-muted:       #666;
   --text-faint:       #444;
   --accent:           #4a90d9;
+  --accent-fg:        #fff;
   --accent-soft:      rgba(74,144,217,0.08);
   --chip-border:      #222238;
   --chip-text:        #4a4a6a;
@@ -159,7 +161,7 @@ h2 {
 
 .theme-opt input:checked + span {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
   border-color: var(--accent);
 }
 
@@ -302,7 +304,7 @@ h2 {
 
 .action-group input:checked + span {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
   border-color: var(--accent);
 }
 
@@ -318,7 +320,7 @@ h2 {
 .btn-save {
   padding: 10px 26px;
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
   border: none;
   border-radius: 8px;
   font-size: 13px;

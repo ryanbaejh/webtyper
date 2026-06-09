@@ -15,8 +15,9 @@
   --text:             #1e1c1a;
   --text-muted:       #6a6058;
   --text-faint:       #a09488;
-  --accent:           #7a5c40;
-  --accent-soft:      rgba(122,92,64,0.09);
+  --accent:           #c4a040;
+  --accent-fg:        #2a1800;
+  --accent-soft:      rgba(196,160,64,0.10);
   --success:          #2d8a50;
   --danger:           #c94040;
   --stat-bg:          #f0ebe2;
@@ -38,6 +39,7 @@
   --text-muted:       #888;
   --text-faint:       #555;
   --accent:           #4a90d9;
+  --accent-fg:        #fff;
   --accent-soft:      rgba(74,144,217,0.08);
   --success:          #5db87a;
   --danger:           #c94040;
@@ -141,7 +143,7 @@ h1 {
 
 .btn-primary {
   background: var(--accent);
-  color: #fff;
+  color: var(--accent-fg);
 }
 
 .btn-secondary {
