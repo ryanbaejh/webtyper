@@ -15,10 +15,10 @@
   --text:             #1e1c1a;
   --text-muted:       #6a6058;
   --text-faint:       #a09488;
-  --accent:           #ede4bc;
+  --accent:           #f1d6b8;
   --accent-fg:        #2a1800;
-  --accent-border:    #c8b46a;
-  --accent-soft:      rgba(237,228,188,0.30);
+  --accent-border:    #c9a06a;
+  --accent-soft:      rgba(241,214,184,0.35);
   --chip-border:      #dbd4c8;
   --chip-text:        #7a7060;
   --chip-hover-border: #bdb2a4;
@@ -324,7 +324,6 @@ h2 {
   background: var(--accent);
   color: var(--accent-fg);
   border: 1px solid var(--accent-border);
-  border: none;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 600;
