@@ -1,3 +1,9 @@
+// Apply theme synchronously before first paint
+document.documentElement.setAttribute(
+  'data-theme',
+  localStorage.getItem('typeover-theme') || 'light'
+);
+
 const DEFAULT_SETTINGS = {
   mode: 'advanced',
   advanced: {
@@ -15,16 +21,16 @@ const DEFAULT_SETTINGS = {
 
 const ADVANCED_KEYS = ['emDash','enDash','smartQuotes','ellipsis','nbSpace','footnotes','accented','ipa','other'];
 
-async function loadSettings() {
-  try {
-    const result = await chrome.storage.sync.get('settings');
-    return result.settings ?? DEFAULT_SETTINGS;
-  } catch {
-    return DEFAULT_SETTINGS;
-  }
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('typeover-theme', theme);
+  chrome.storage.sync.set({ theme }).catch(() => {});
 }
 
-function applyToForm(settings) {
+function applyToForm(settings, theme) {
+  const themeEl = document.querySelector(`input[name="theme"][value="${theme}"]`);
+  if (themeEl) themeEl.checked = true;
+
   const modeEl = document.querySelector(`input[name="mode"][value="${settings.mode}"]`);
   if (modeEl) modeEl.checked = true;
 
@@ -41,7 +47,7 @@ function updateAdvancedVisibility(mode) {
   document.getElementById('advanced-panel').classList.toggle('hidden', mode !== 'advanced');
 }
 
-function collectFromForm() {
+function collectSettings() {
   const modeEl = document.querySelector('input[name="mode"]:checked');
   const mode = modeEl?.value ?? 'advanced';
 
@@ -54,13 +60,20 @@ function collectFromForm() {
   return { mode, advanced };
 }
 
+// Theme changes apply immediately
+document.querySelectorAll('input[name="theme"]').forEach(radio => {
+  radio.addEventListener('change', () => applyTheme(radio.value));
+});
+
+// Mode changes show/hide advanced panel
 document.querySelectorAll('input[name="mode"]').forEach(radio => {
   radio.addEventListener('change', () => updateAdvancedVisibility(radio.value));
 });
 
+// Save button persists character settings
 document.getElementById('btn-save').addEventListener('click', async () => {
-  const settings = collectFromForm();
-  await chrome.storage.sync.set({ settings });
+  const settings = collectSettings();
+  await chrome.storage.sync.set({ settings }).catch(() => {});
 
   const status = document.getElementById('save-status');
   status.textContent = 'Saved!';
@@ -68,7 +81,19 @@ document.getElementById('btn-save').addEventListener('click', async () => {
   setTimeout(() => status.classList.remove('visible'), 2000);
 });
 
+// Init — load both settings and theme from storage
 (async () => {
-  const settings = await loadSettings();
-  applyToForm(settings);
+  const [sr, tr] = await Promise.all([
+    chrome.storage.sync.get('settings').catch(() => ({})),
+    chrome.storage.sync.get('theme').catch(() => ({})),
+  ]);
+
+  const settings = sr.settings ?? DEFAULT_SETTINGS;
+  const theme = tr.theme ?? localStorage.getItem('typeover-theme') ?? 'light';
+
+  // Keep localStorage in sync with storage
+  localStorage.setItem('typeover-theme', theme);
+  document.documentElement.setAttribute('data-theme', theme);
+
+  applyToForm(settings, theme);
 })();

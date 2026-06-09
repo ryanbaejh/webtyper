@@ -1,3 +1,9 @@
+// Apply theme before first paint (localStorage is synchronous)
+document.documentElement.setAttribute(
+  'data-theme',
+  localStorage.getItem('typeover-theme') || 'light'
+);
+
 let pollTimer = null;
 
 // ── Helpers ──────────────────────────────────────────────────────────────────

@@ -4,10 +4,58 @@
   padding: 0;
 }
 
+/* ── Theme tokens ─────────────────────────────────────────────────────── */
+
+:root {
+  --bg:               #f5f0e8;
+  --surface:          #fdfaf5;
+  --surface-hover:    #ede8de;
+  --border:           #e8ddd0;
+  --border-strong:    #d5cab5;
+  --text:             #2a2318;
+  --text-muted:       #6e6258;
+  --text-faint:       #9e9080;
+  --accent:           #6e76ff;
+  --accent-soft:      rgba(110,118,255,0.09);
+  --success:          #2d8a50;
+  --danger:           #c94040;
+  --stat-bg:          #ede8de;
+  --stat-border:      #e0d5c2;
+  --btn-2-bg:         #ede8de;
+  --btn-2-text:       #4a4030;
+  --btn-2-border:     #ddd5c2;
+  --btn-ghost-border: #d5cab5;
+  --btn-ghost-text:   #6e6258;
+}
+
+[data-theme="dark"] {
+  --bg:               #12121f;
+  --surface:          #1a1a30;
+  --surface-hover:    #16162a;
+  --border:           #2a2a45;
+  --border-strong:    #3a3a55;
+  --text:             #e2e2f0;
+  --text-muted:       #888;
+  --text-faint:       #555;
+  --accent:           #6e76ff;
+  --accent-soft:      rgba(110,118,255,0.07);
+  --success:          #5db87a;
+  --danger:           #c94040;
+  --stat-bg:          #12121f;
+  --stat-border:      #252540;
+  --btn-2-bg:         #1e1e35;
+  --btn-2-text:       #b0b0cc;
+  --btn-2-border:     #2a2a45;
+  --btn-ghost-border: #2a2a45;
+  --btn-ghost-text:   #666;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────── */
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #12121f;
-  color: #e2e2f0;
+  background: var(--bg);
+  color: var(--text);
   width: 260px;
   min-height: 140px;
   -webkit-font-smoothing: antialiased;
@@ -31,7 +79,7 @@ header {
   justify-content: center;
   width: 28px;
   height: 28px;
-  background: #6e76ff;
+  background: var(--accent);
   border-radius: 7px;
   font-size: 15px;
   font-weight: 800;
@@ -42,7 +90,7 @@ header {
 h1 {
   font-size: 16px;
   font-weight: 700;
-  color: #e2e2f0;
+  color: var(--text);
   letter-spacing: 0.3px;
 }
 
@@ -51,7 +99,7 @@ h1 {
   margin-left: auto;
   background: none;
   border: none;
-  color: #333;
+  color: var(--text-faint);
   font-size: 16px;
   cursor: pointer;
   padding: 3px 5px;
@@ -59,18 +107,19 @@ h1 {
   line-height: 1;
   transition: color 0.15s;
 }
-.btn-icon:hover { color: #777; }
+.btn-icon:hover { color: var(--text-muted); }
 
 /* Views */
 .view.hidden { display: none; }
 
 .hint {
   font-size: 12px;
-  color: #666;
+  color: var(--text-muted);
   margin-bottom: 12px;
 }
 
-/* Buttons */
+/* ── Buttons ──────────────────────────────────────────────────────────── */
+
 .btn {
   display: block;
   width: 100%;
@@ -83,32 +132,32 @@ h1 {
   margin-bottom: 7px;
   transition: filter 0.15s, transform 0.1s;
   line-height: 1;
+  font-family: inherit;
 }
 
 .btn:last-child { margin-bottom: 0; }
-
-.btn:hover  { filter: brightness(1.12); }
+.btn:hover  { filter: brightness(1.08); }
 .btn:active { transform: scale(0.98); }
 
 .btn-primary {
-  background: #6e76ff;
+  background: var(--accent);
   color: #fff;
 }
 
 .btn-secondary {
-  background: #1e1e35;
-  color: #b0b0cc;
-  border: 1px solid #2a2a45;
+  background: var(--btn-2-bg);
+  color: var(--btn-2-text);
+  border: 1px solid var(--btn-2-border);
 }
 
 .btn-ghost {
   background: transparent;
-  color: #666;
-  border: 1px solid #2a2a45;
+  color: var(--btn-ghost-text);
+  border: 1px solid var(--btn-ghost-border);
 }
 
 .btn-danger {
-  background: #c94040;
+  background: var(--danger);
   color: #fff;
 }
 
@@ -122,7 +171,8 @@ h1 {
   margin-bottom: 0;
 }
 
-/* Stats grid */
+/* ── Stats grid ───────────────────────────────────────────────────────── */
+
 .stats-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -131,8 +181,8 @@ h1 {
 }
 
 .stat {
-  background: #1a1a30;
-  border: 1px solid #252540;
+  background: var(--stat-bg);
+  border: 1px solid var(--stat-border);
   border-radius: 8px;
   padding: 10px 8px;
   text-align: center;
@@ -142,32 +192,32 @@ h1 {
   display: block;
   font-size: 20px;
   font-weight: 700;
-  color: #e2e2f0;
+  color: var(--text);
   line-height: 1;
 }
 
-.stat-val.accent { color: #6e76ff; }
+.stat-val.accent { color: var(--accent); }
 
 .stat-lbl {
   display: block;
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.6px;
-  color: #555;
+  color: var(--text-faint);
   margin-top: 4px;
 }
 
-/* Complete */
+/* ── Views ────────────────────────────────────────────────────────────── */
+
 .complete-label {
   font-size: 13px;
   font-weight: 700;
-  color: #5db87a;
+  color: var(--success);
   margin-bottom: 12px;
 }
 
-/* Selecting view */
 .selecting-hint {
-  color: #6e76ff;
+  color: var(--accent);
   font-weight: 600;
   font-size: 13px;
 }
@@ -176,7 +226,7 @@ h1 {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  border: 2px solid #6e76ff;
+  border: 2px solid var(--accent);
   margin: 10px auto 14px;
   animation: pulse 1.4s ease-in-out infinite;
 }
