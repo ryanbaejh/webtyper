@@ -186,6 +186,98 @@
     return chars;
   }
 
+  // Wraps only the characters covered by a Range, leaving surrounding text intact.
+  // Returns the chars array for the selected text only.
+  function wrapRangeChars(range) {
+    const chars = [];
+    const SKIP = new Set(['SCRIPT','STYLE','NOSCRIPT','IFRAME','INPUT','TEXTAREA','SELECT','BUTTON']);
+
+    const root = range.commonAncestorContainer;
+    const walkRoot = root.nodeType === Node.TEXT_NODE ? root.parentNode : root;
+
+    const walker = document.createTreeWalker(walkRoot, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const p = node.parentElement;
+        if (p && SKIP.has(p.tagName)) return NodeFilter.FILTER_REJECT;
+        if (p?.isContentEditable) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+
+    // Collect matching nodes first — modifying the tree during a walk breaks it
+    const toWrap = [];
+    let node;
+    while ((node = walker.nextNode())) {
+      if (!range.intersectsNode(node)) continue;
+      let start = 0;
+      let end = node.textContent.length;
+      if (node === range.startContainer) start = range.startOffset;
+      if (node === range.endContainer)   end   = range.endOffset;
+      if (start < end) toWrap.push({ node, start, end });
+    }
+
+    for (const { node, start, end } of toWrap) {
+      const text = node.textContent;
+      const frag = document.createDocumentFragment();
+
+      if (start > 0) {
+        frag.appendChild(document.createTextNode(text.slice(0, start)));
+      }
+
+      for (const ch of text.slice(start, end)) {
+        const expected = /[\n\r\t]/.test(ch) ? ' ' : ch;
+        const span = document.createElement('span');
+        span.className = 'typeover-char typeover-pending';
+        span.textContent = ch;
+        frag.appendChild(span);
+        chars.push({ expected, state: 'pending', span });
+      }
+
+      if (end < text.length) {
+        frag.appendChild(document.createTextNode(text.slice(end)));
+      }
+
+      node.parentNode.replaceChild(frag, node);
+    }
+
+    return chars;
+  }
+
+  // Starts a session from a Range (Highlight Mode).
+  // Uses the nearest block ancestor as the save/restore boundary.
+  function startHighlightSession(range) {
+    let saveEl = range.commonAncestorContainer;
+    if (saveEl.nodeType === Node.TEXT_NODE) saveEl = saveEl.parentElement;
+    while (saveEl && saveEl !== document.body && !BLOCK_TAGS.has(saveEl.tagName)) {
+      saveEl = saveEl.parentElement;
+    }
+    if (!saveEl || saveEl === document.body) {
+      saveEl = range.commonAncestorContainer;
+      if (saveEl.nodeType === Node.TEXT_NODE) saveEl = saveEl.parentElement;
+    }
+
+    state.container = saveEl;
+    state.savedHTML = saveEl.innerHTML;
+
+    const chars = wrapRangeChars(range);
+
+    if (chars.length === 0) {
+      restore();
+      state.mode = 'idle';
+      return;
+    }
+
+    state.chars = chars;
+    state.cursor = 0;
+    state.startTime = null;
+    state.correctCount = 0;
+    state.mistakeCount = 0;
+    state.totalTyped = 0;
+    state.mode = 'active';
+
+    moveCursor(0);
+  }
+
   // ── Cursor ─────────────────────────────────────────────────────────────────
 
   function moveCursor(index) {
@@ -355,18 +447,9 @@
           sendResponse({ ok: false, reason: 'no-selection' });
           break;
         }
-        const range = sel.getRangeAt(0);
-        let node = range.startContainer;
-        let el = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
-        // Walk up to nearest block element
-        while (el && el !== document.body && !BLOCK_TAGS.has(el.tagName)) {
-          el = el.parentElement;
-        }
-        if (!el || el === document.body) {
-          el = node.nodeType === Node.TEXT_NODE ? node.parentElement : node;
-        }
+        const range = sel.getRangeAt(0).cloneRange();
         sel.removeAllRanges();
-        startSession(el);
+        startHighlightSession(range);
         sendResponse({ ok: true });
         break;
       }
