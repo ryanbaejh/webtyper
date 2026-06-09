@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "TypeOver",
+  "name": "Webtyper",
   "version": "1.0.0",
   "description": "Practice typing on any webpage",
   "action": {

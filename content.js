@@ -1,6 +1,6 @@
 (() => {
-  if (window.__typeOverLoaded) return;
-  window.__typeOverLoaded = true;
+  if (window.__webtyperLoaded) return;
+  window.__webtyperLoaded = true;
 
   // ── State ──────────────────────────────────────────────────────────────────
 
@@ -122,7 +122,7 @@
     document.removeEventListener('mouseout', onHoverOut);
     document.removeEventListener('click', onSelectClick, true);
     if (hoverTarget) {
-      hoverTarget.classList.remove('typeover-highlight');
+      hoverTarget.classList.remove('webtyper-highlight');
       hoverTarget = null;
     }
   }
@@ -130,10 +130,10 @@
   function onHover(e) {
     const el = findContainer(e.target);
     if (hoverTarget && hoverTarget !== el) {
-      hoverTarget.classList.remove('typeover-highlight');
+      hoverTarget.classList.remove('webtyper-highlight');
     }
     if (el) {
-      el.classList.add('typeover-highlight');
+      el.classList.add('webtyper-highlight');
       hoverTarget = el;
     } else {
       hoverTarget = null;
@@ -142,7 +142,7 @@
 
   function onHoverOut() {
     if (hoverTarget) {
-      hoverTarget.classList.remove('typeover-highlight');
+      hoverTarget.classList.remove('webtyper-highlight');
       hoverTarget = null;
     }
   }
@@ -270,9 +270,9 @@
           span.textContent = ch;
           const { skip, expected } = processChar(ch, settings);
           if (skip) {
-            span.className = 'typeover-char typeover-skipped';
+            span.className = 'webtyper-char webtyper-skipped';
           } else {
-            span.className = 'typeover-char typeover-pending';
+            span.className = 'webtyper-char webtyper-pending';
             chars.push({ expected, state: 'pending', span });
           }
           frag.appendChild(span);
@@ -336,9 +336,9 @@
         span.textContent = ch;
         const { skip, expected } = processChar(ch, settings);
         if (skip) {
-          span.className = 'typeover-char typeover-skipped';
+          span.className = 'webtyper-char webtyper-skipped';
         } else {
-          span.className = 'typeover-char typeover-pending';
+          span.className = 'webtyper-char webtyper-pending';
           chars.push({ expected, state: 'pending', span });
         }
         frag.appendChild(span);
@@ -395,7 +395,7 @@
     removeCursor();
     if (index >= state.chars.length) return;
     cursorSpan = document.createElement('span');
-    cursorSpan.className = 'typeover-cursor';
+    cursorSpan.className = 'webtyper-cursor';
     const target = state.chars[index].span;
     target.parentNode.insertBefore(cursorSpan, target);
   }
@@ -439,11 +439,11 @@
 
     if (typed === c.expected) {
       c.state = 'correct';
-      c.span.className = 'typeover-char typeover-correct';
+      c.span.className = 'webtyper-char webtyper-correct';
       state.correctCount++;
     } else {
       c.state = 'incorrect';
-      c.span.className = 'typeover-char typeover-incorrect';
+      c.span.className = 'webtyper-char webtyper-incorrect';
       state.mistakeCount++;
     }
 
@@ -465,7 +465,7 @@
     if (c.state !== 'pending') state.totalTyped--;
 
     c.state = 'pending';
-    c.span.className = 'typeover-char typeover-pending';
+    c.span.className = 'webtyper-char webtyper-pending';
     moveCursor(state.cursor);
   }
 
@@ -493,17 +493,17 @@
   function showOverlay(stats) {
     dismissOverlay();
     overlayEl = document.createElement('div');
-    overlayEl.className = 'typeover-overlay';
+    overlayEl.className = 'webtyper-overlay';
 
     const box = document.createElement('div');
-    box.className = 'typeover-overlay-box';
+    box.className = 'webtyper-overlay-box';
 
     const title = document.createElement('p');
-    title.className = 'typeover-overlay-title';
+    title.className = 'webtyper-overlay-title';
     title.textContent = 'Session Complete';
 
     const grid = document.createElement('div');
-    grid.className = 'typeover-overlay-grid';
+    grid.className = 'webtyper-overlay-grid';
 
     [
       [stats.wpm,        'WPM'],
@@ -512,12 +512,12 @@
       [stats.mistakes,   'Mistakes'],
     ].forEach(([val, lbl]) => {
       const cell = document.createElement('div');
-      cell.className = 'typeover-overlay-stat';
+      cell.className = 'webtyper-overlay-stat';
       const v = document.createElement('span');
-      v.className = 'typeover-overlay-val';
+      v.className = 'webtyper-overlay-val';
       v.textContent = val;
       const l = document.createElement('span');
-      l.className = 'typeover-overlay-lbl';
+      l.className = 'webtyper-overlay-lbl';
       l.textContent = lbl;
       cell.appendChild(v);
       cell.appendChild(l);
@@ -525,7 +525,7 @@
     });
 
     const btn = document.createElement('button');
-    btn.className = 'typeover-overlay-btn';
+    btn.className = 'webtyper-overlay-btn';
     btn.textContent = 'Done';
     btn.addEventListener('click', cleanupSession);
 

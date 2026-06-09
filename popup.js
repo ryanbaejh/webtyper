@@ -1,7 +1,7 @@
 // Apply theme before first paint (localStorage is synchronous)
 document.documentElement.setAttribute(
   'data-theme',
-  localStorage.getItem('typeover-theme') || 'light'
+  localStorage.getItem('webtyper-theme') || 'light'
 );
 
 let pollTimer = null;

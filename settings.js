@@ -1,7 +1,7 @@
 // Apply theme synchronously before first paint
 document.documentElement.setAttribute(
   'data-theme',
-  localStorage.getItem('typeover-theme') || 'light'
+  localStorage.getItem('webtyper-theme') || 'light'
 );
 
 const DEFAULT_SETTINGS = {
@@ -23,7 +23,7 @@ const ADVANCED_KEYS = ['emDash','enDash','smartQuotes','ellipsis','nbSpace','foo
 
 function applyTheme(theme) {
   document.documentElement.setAttribute('data-theme', theme);
-  localStorage.setItem('typeover-theme', theme);
+  localStorage.setItem('webtyper-theme', theme);
   chrome.storage.sync.set({ theme }).catch(() => {});
 }
 
@@ -89,10 +89,10 @@ document.getElementById('btn-save').addEventListener('click', async () => {
   ]);
 
   const settings = sr.settings ?? DEFAULT_SETTINGS;
-  const theme = tr.theme ?? localStorage.getItem('typeover-theme') ?? 'light';
+  const theme = tr.theme ?? localStorage.getItem('webtyper-theme') ?? 'light';
 
   // Keep localStorage in sync with storage
-  localStorage.setItem('typeover-theme', theme);
+  localStorage.setItem('webtyper-theme', theme);
   document.documentElement.setAttribute('data-theme', theme);
 
   applyToForm(settings, theme);

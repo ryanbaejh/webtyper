@@ -1,10 +1,10 @@
-# TypeOver
+# Webtyper
 
 A Chrome extension that turns any webpage into a typing test. Practice typing using real content from articles, Wikipedia, news — whatever you're already reading.
 
 ## How it works
 
-TypeOver greys out the text on the page. As you type, each character is revealed at full opacity. Mistakes are highlighted in red. When you finish, a stats overlay shows your WPM, accuracy, time, and mistake count.
+Webtyper greys out the text on the page. As you type, each character is revealed at full opacity. Mistakes are highlighted in red. When you finish, a stats overlay shows your WPM, accuracy, time, and mistake count.
 
 ## Features
 
@@ -17,13 +17,13 @@ TypeOver greys out the text on the page. As you type, each character is revealed
 
 ## Installation
 
-TypeOver is not published to the Chrome Web Store. Load it as an unpacked extension:
+Webtyper is not published to the Chrome Web Store. Load it as an unpacked extension:
 
 1. Clone or download this repository
 2. Open Chrome and go to `chrome://extensions`
 3. Enable **Developer mode** (toggle in the top right)
 4. Click **Load unpacked** and select the project folder
-5. The TypeOver icon will appear in your toolbar
+5. The Webtyper icon will appear in your toolbar
 
 After making any code changes, click the refresh icon on the extension card at `chrome://extensions` to reload it.
 
@@ -31,7 +31,7 @@ After making any code changes, click the refresh icon on the extension card at `
 
 ### Quick Start
 
-1. Click the TypeOver icon in the toolbar
+1. Click the Webtyper icon in the toolbar
 2. Click **Quick Start** — the cursor changes to a crosshair
 3. Hover over a paragraph or block of text (it will highlight in blue)
 4. Click to start the session
@@ -39,7 +39,7 @@ After making any code changes, click the refresh icon on the extension card at `
 ### Highlight Mode
 
 1. Select the exact text you want to type on the page
-2. Click the TypeOver icon
+2. Click the Webtyper icon
 3. Click **Start Highlighted Text**
 
 ### During a session
@@ -55,7 +55,7 @@ The popup shows live WPM and accuracy while you type. Click **End** to stop earl
 
 ## Settings
 
-Click the **⚙** icon in the popup header, or go to `chrome://extensions` → TypeOver → Details → Extension options.
+Click the **⚙** icon in the popup header, or go to `chrome://extensions` → Webtyper → Details → Extension options.
 
 ### Appearance
 
@@ -63,7 +63,7 @@ Toggle between **Light** (warm beige) and **Dark** (dark navy) themes. The chang
 
 ### Special Characters
 
-Choose how TypeOver handles characters that aren't on a standard keyboard:
+Choose how Webtyper handles characters that aren't on a standard keyboard:
 
 | Mode | Behaviour |
 |------|-----------|
