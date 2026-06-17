@@ -6,6 +6,7 @@ document.documentElement.setAttribute(
 
 const DEFAULT_SETTINGS = {
   mode: 'advanced',
+  liveStats: true,
   advanced: {
     emDash:      'replace',
     enDash:      'replace',
@@ -34,6 +35,9 @@ function applyToForm(settings, theme) {
   const modeEl = document.querySelector(`input[name="mode"][value="${settings.mode}"]`);
   if (modeEl) modeEl.checked = true;
 
+  const liveStatsEl = document.getElementById('liveStats');
+  if (liveStatsEl) liveStatsEl.checked = settings.liveStats !== false;
+
   for (const key of ADVANCED_KEYS) {
     const val = settings.advanced?.[key] ?? DEFAULT_SETTINGS.advanced[key];
     const el = document.querySelector(`input[name="${key}"][value="${val}"]`);
@@ -57,7 +61,9 @@ function collectSettings() {
     advanced[key] = el?.value ?? DEFAULT_SETTINGS.advanced[key];
   }
 
-  return { mode, advanced };
+  const liveStats = document.getElementById('liveStats')?.checked ?? true;
+
+  return { mode, liveStats, advanced };
 }
 
 // Theme changes apply immediately

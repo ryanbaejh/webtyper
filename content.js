@@ -19,11 +19,16 @@
   let cursorSpan = null;
   let hoverTarget = null;
   let overlayEl = null;
+  let currentTheme = 'light';
+  let hudEl = null;
+  let hudTimer = null;
+  let hudVals = null;
 
   // ── Settings ───────────────────────────────────────────────────────────────
 
   const DEFAULT_SETTINGS = {
     mode: 'advanced',
+    liveStats: true,
     advanced: {
       emDash:      'replace',
       enDash:      'replace',
@@ -39,13 +44,23 @@
 
   let cachedSettings = DEFAULT_SETTINGS;
 
-  chrome.storage.sync.get('settings').then(r => {
+  chrome.storage.sync.get(['settings', 'theme']).then(r => {
     if (r.settings) cachedSettings = r.settings;
+    if (r.theme) currentTheme = r.theme;
   }).catch(() => {});
 
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area === 'sync' && changes.settings) {
+    if (area !== 'sync') return;
+    if (changes.settings) {
       cachedSettings = changes.settings.newValue ?? DEFAULT_SETTINGS;
+      // Reflect a live-stats toggle immediately if a session is in progress
+      if (state.mode === 'active') {
+        if (liveStatsEnabled()) showHud(); else removeHud();
+      }
+    }
+    if (changes.theme) {
+      currentTheme = changes.theme.newValue ?? 'light';
+      if (hudEl) hudEl.setAttribute('data-theme', currentTheme);
     }
   });
 
@@ -196,6 +211,7 @@
     state.mode = 'active';
 
     moveCursor(0);
+    showHud();
   }
 
   // Show stats overlay — called on natural completion OR manual End
@@ -209,6 +225,7 @@
     if (state.mode === 'complete') { cleanupSession(); return; }
     // active → show stats instead of silently ending
     state.mode = 'complete';
+    removeHud();
     removeCursor();
     showOverlay(getStats());
   }
@@ -216,6 +233,7 @@
   // Full teardown — called from Done button, Reset, or starting a new session
   function cleanupSession() {
     state.mode = 'idle';
+    removeHud();
     removeCursor();
     dismissOverlay();
     restore();
@@ -223,6 +241,7 @@
 
   function completeSession() {
     state.mode = 'complete';
+    removeHud();
     removeCursor();
     showOverlay(getStats());
   }
@@ -387,6 +406,7 @@
     state.mode = 'active';
 
     moveCursor(0);
+    showHud();
   }
 
   // ── Cursor ─────────────────────────────────────────────────────────────────
@@ -430,6 +450,8 @@
     } else if (e.key.length === 1) {
       handleChar(e.key);
     }
+
+    updateHud();
   }, true);
 
   function handleChar(typed) {
@@ -494,6 +516,7 @@
     dismissOverlay();
     overlayEl = document.createElement('div');
     overlayEl.className = 'webtyper-overlay';
+    overlayEl.setAttribute('data-theme', currentTheme);
 
     const box = document.createElement('div');
     box.className = 'webtyper-overlay-box';
@@ -506,10 +529,10 @@
     grid.className = 'webtyper-overlay-grid';
 
     [
-      [stats.wpm,        'WPM'],
+      [stats.wpm,            'WPM'],
       [stats.accuracy + '%', 'Accuracy'],
-      [stats.charsTyped, 'Characters'],
-      [stats.mistakes,   'Mistakes'],
+      [stats.mistakes,       'Mistakes'],
+      [stats.charsTyped,     'Characters'],
     ].forEach(([val, lbl]) => {
       const cell = document.createElement('div');
       cell.className = 'webtyper-overlay-stat';
@@ -538,6 +561,64 @@
 
   function dismissOverlay() {
     if (overlayEl) { overlayEl.remove(); overlayEl = null; }
+  }
+
+  // ── Live Stats HUD ───────────────────────────────────────────────────────
+  // Flat, text-only panel pinned to the top-right while a session is active.
+  // Controlled by the `liveStats` setting (default on).
+
+  const HUD_ROWS = [
+    ['WPM',      'wpm'],
+    ['Accuracy', 'acc'],
+    ['Mistakes', 'miss'],
+    ['Time',     'time'],
+  ];
+
+  function liveStatsEnabled() {
+    return cachedSettings.liveStats !== false; // default on when unset
+  }
+
+  function showHud() {
+    removeHud();
+    if (!liveStatsEnabled()) return;
+
+    hudEl = document.createElement('div');
+    hudEl.className = 'webtyper-hud';
+    hudEl.setAttribute('data-theme', currentTheme);
+
+    hudVals = {};
+    for (const [label, key] of HUD_ROWS) {
+      const row = document.createElement('div');
+      row.className = 'webtyper-hud-row';
+      const l = document.createElement('span');
+      l.className = 'webtyper-hud-lbl';
+      l.textContent = label;
+      const v = document.createElement('span');
+      v.className = 'webtyper-hud-val';
+      hudVals[key] = v;
+      row.appendChild(l);
+      row.appendChild(v);
+      hudEl.appendChild(row);
+    }
+
+    document.body.appendChild(hudEl);
+    updateHud();
+    hudTimer = setInterval(updateHud, 250);
+  }
+
+  function updateHud() {
+    if (!hudEl || !hudVals) return;
+    const s = getStats();
+    hudVals.wpm.textContent  = s.wpm;
+    hudVals.acc.textContent  = s.accuracy + '%';
+    hudVals.miss.textContent = s.mistakes;
+    hudVals.time.textContent = s.time + 's';
+  }
+
+  function removeHud() {
+    if (hudTimer) { clearInterval(hudTimer); hudTimer = null; }
+    if (hudEl) { hudEl.remove(); hudEl = null; }
+    hudVals = null;
   }
 
   // ── Message Bridge ─────────────────────────────────────────────────────────

@@ -51,86 +51,195 @@
   50%       { opacity: 0; }
 }
 
-/* Completion overlay */
+/* Completion overlay — dark (default).
+   Token values mirror popup.css so both completion screens share one design. */
 .webtyper-overlay {
+  --ov-backdrop: rgba(0, 0, 0, 0.6);
+  --ov-box-bg: #1a1a30;        /* = popup --surface */
+  --ov-box-border: #2a2a45;    /* = popup --border */
+  --ov-box-shadow: rgba(0, 0, 0, 0.55);
+  --ov-title: #5db87a;         /* = popup --success */
+  --ov-stat-bg: #12121f;       /* = popup --stat-bg */
+  --ov-stat-border: #252540;   /* = popup --stat-border */
+  --ov-val: #e2e2f0;           /* = popup --text */
+  --ov-lbl: #555;              /* = popup --text-faint */
+  --ov-btn-bg: #4a90d9;        /* = popup --accent */
+  --ov-btn-fg: #fff;           /* = popup --accent-fg */
+  --ov-btn-border: transparent;/* = popup --accent-border */
+
   position: fixed !important;
   inset: 0 !important;
-  background: rgba(0, 0, 0, 0.6) !important;
+  background: var(--ov-backdrop) !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
   z-index: 2147483647 !important;
+}
+
+/* Force the popup's font on the overlay AND every descendant, so host-page
+   styles on p/span/div can't override the inherited family. */
+.webtyper-overlay,
+.webtyper-overlay * {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
 }
 
+/* Light theme override */
+.webtyper-overlay[data-theme="light"] {
+  --ov-backdrop: rgba(0, 0, 0, 0.4);
+  --ov-box-bg: #fffefb;
+  --ov-box-border: #e8e0d4;
+  --ov-box-shadow: rgba(0, 0, 0, 0.12);
+  --ov-title: #2d8a50;
+  --ov-stat-bg: #f0ebe2;
+  --ov-stat-border: #e0d8cc;
+  --ov-val: #1e1c1a;
+  --ov-lbl: #a09488;
+  --ov-btn-bg: #f1d6b8;
+  --ov-btn-fg: #2a1800;
+  --ov-btn-border: #c9a06a;
+}
+
 .webtyper-overlay-box {
-  background: #1a1a30 !important;
-  border: 1px solid #2a2a45 !important;
+  background: var(--ov-box-bg) !important;
+  border: 1px solid var(--ov-box-border) !important;
   border-radius: 14px !important;
   padding: 28px 32px !important;
   min-width: 270px !important;
   text-align: center !important;
-  box-shadow: 0 24px 64px rgba(0,0,0,0.55) !important;
+  box-shadow: 0 24px 64px var(--ov-box-shadow) !important;
   animation: webtyper-fadein 0.2s ease !important;
 }
 
+/* = popup .complete-label */
 .webtyper-overlay-title {
-  font-size: 15px !important;
+  font-size: 13px !important;
   font-weight: 700 !important;
-  color: #5db87a !important;
-  margin: 0 0 18px 0 !important;
-  letter-spacing: 0.3px !important;
+  color: var(--ov-title) !important;
+  margin: 0 0 12px 0 !important;
+  letter-spacing: normal !important;
 }
 
+/* = popup .stats-grid */
 .webtyper-overlay-grid {
   display: grid !important;
   grid-template-columns: 1fr 1fr !important;
-  gap: 10px !important;
-  margin-bottom: 18px !important;
+  gap: 8px !important;
+  margin-bottom: 12px !important;
 }
 
+/* = popup .stat */
 .webtyper-overlay-stat {
-  background: #12121f !important;
+  background: var(--ov-stat-bg) !important;
+  border: 1px solid var(--ov-stat-border) !important;
   border-radius: 8px !important;
-  padding: 12px 8px !important;
+  padding: 10px 8px !important;
+  text-align: center !important;
 }
 
+/* = popup .stat-val */
 .webtyper-overlay-val {
   display: block !important;
-  font-size: 24px !important;
-  font-weight: 800 !important;
-  color: #3d84d1 !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  color: var(--ov-val) !important;
   line-height: 1 !important;
+  letter-spacing: normal !important;
 }
 
+/* = popup .stat-lbl */
 .webtyper-overlay-lbl {
   display: block !important;
   font-size: 10px !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.8px !important;
-  color: #555 !important;
-  margin-top: 5px !important;
+  letter-spacing: 0.6px !important;
+  color: var(--ov-lbl) !important;
+  margin-top: 4px !important;
 }
 
+/* = popup .btn + .btn-primary */
 .webtyper-overlay-btn {
-  display: inline-block !important;
-  padding: 9px 28px !important;
-  background: #3d84d1 !important;
-  color: #fff !important;
-  border: none !important;
+  display: block !important;
+  width: 100% !important;
+  padding: 9px 14px !important;
+  background: var(--ov-btn-bg) !important;
+  color: var(--ov-btn-fg) !important;
+  border: 1px solid var(--ov-btn-border) !important;
   border-radius: 7px !important;
   font-size: 13px !important;
   font-weight: 600 !important;
   cursor: pointer !important;
   font-family: inherit !important;
-  letter-spacing: 0.2px !important;
+  line-height: 1 !important;
+  letter-spacing: normal !important;
 }
 
 .webtyper-overlay-btn:hover {
-  filter: brightness(1.12) !important;
+  filter: brightness(1.08) !important;
 }
 
 @keyframes webtyper-fadein {
   from { opacity: 0; transform: scale(0.94); }
   to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Live Stats HUD ─────────────────────────────────────────────────────────
+   Flat, text-only panel pinned top-right while a session is active. Mirrors the
+   popup theme tokens; no accent colors, no shadow — deliberately understated. */
+.webtyper-hud {
+  --hud-bg: #1a1a30;        /* dark (default) = popup --surface */
+  --hud-border: #2a2a45;    /* = popup --border */
+  --hud-text: #e2e2f0;      /* = popup --text */
+  --hud-lbl: #555;          /* = popup --text-faint */
+
+  position: fixed !important;
+  top: 16px !important;
+  right: 16px !important;
+  z-index: 2147483646 !important;   /* just under the completion overlay */
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 5px !important;
+  min-width: 124px !important;
+  padding: 11px 13px !important;
+  background: var(--hud-bg) !important;
+  border: 1px solid var(--hud-border) !important;
+  border-radius: 8px !important;
+  font-variant-numeric: tabular-nums !important;  /* numbers don't jitter */
+  pointer-events: none !important;  /* never blocks the page underneath */
+  user-select: none !important;
+}
+
+.webtyper-hud[data-theme="light"] {
+  --hud-bg: #fffefb;
+  --hud-border: #e8e0d4;
+  --hud-text: #1e1c1a;
+  --hud-lbl: #a09488;
+}
+
+/* Resist host-page font/box rules on the HUD and its children */
+.webtyper-hud,
+.webtyper-hud * {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  box-sizing: border-box !important;
+}
+
+.webtyper-hud-row {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 18px !important;
+  line-height: 1.25 !important;
+}
+
+.webtyper-hud-lbl {
+  font-size: 10px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.6px !important;
+  color: var(--hud-lbl) !important;
+}
+
+.webtyper-hud-val {
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--hud-text) !important;
 }

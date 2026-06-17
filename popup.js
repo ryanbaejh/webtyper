@@ -74,8 +74,9 @@ document.getElementById('btn-highlight').addEventListener('click', async () => {
   const res = await send({ type: 'START_HIGHLIGHT' });
   if (!res) return;
   if (res.ok) {
-    show('view-active');
-    startPolling();
+    // Close the popup so keyboard focus returns to the page — otherwise the
+    // open popup keeps focus and the user has to click the page before typing.
+    window.close();
   } else {
     // Brief shake to signal no selection
     const btn = document.getElementById('btn-highlight');

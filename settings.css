@@ -167,6 +167,56 @@ h2 {
   border-color: var(--accent-border, var(--accent));
 }
 
+/* ── Toggle (checkbox) ────────────────────────────────────────────────── */
+
+.toggle-opt {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  padding: 12px 14px;
+  border-radius: 9px;
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.toggle-opt:hover {
+  border-color: var(--border-strong);
+  background: var(--surface-hover);
+}
+
+.toggle-opt:has(input:checked) {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.toggle-opt input[type="checkbox"] {
+  margin-top: 1px;
+  width: 15px;
+  height: 15px;
+  accent-color: var(--accent);
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.toggle-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.toggle-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.toggle-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
 /* ── Mode selector ────────────────────────────────────────────────────── */
 
 .mode-list {
